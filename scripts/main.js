@@ -139,6 +139,8 @@ try {
 
   const renderGoodsList = (data) => {
     goodsList.textContent = '';
+    //const arr = data.map(createCard);
+    //goodsList.append(...arr);
     data.forEach((item) => {
       const card = createCard(item);
       goodsList.append(card);
