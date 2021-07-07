@@ -105,13 +105,23 @@ try {
     li.innerHTML = `
             <article class="good">
                 <a class="good__link-img" href="card-good.html#${data.id}">
-                    <img class="good__img" src="goods-image/${data.preview}" alt="${data.name}">
+                    <img class="good__img" src="goods-image/${
+                      data.preview
+                    }" alt="${data.name}">
                  </a>
                  <div class="good__description">
                     <p class="good__price">${data.cost} &#8381;</p>
-                    <h3 class="good__title">${data.brand} <span class="good__title__grey">/ ${data.name} </span></h3>
-                    <p class="good__sizes">Размеры (RUS): <span class="good__sizes-list">${data.sizes}</span></p>
-                    <a class="good__link" href="card-good.html#${data.id}">Подробнее</a>
+                    <h3 class="good__title">${
+                      data.brand
+                    } <span class="good__title__grey">/ ${
+      data.name
+    } </span></h3>
+                    <p class="good__sizes">Размеры (RUS): <span class="good__sizes-list">${data.sizes.join(
+                      ', '
+                    )}</span></p>
+                    <a class="good__link" href="card-good.html#${
+                      data.id
+                    }">Подробнее</a>
                  </div>
             </article>
         `;
