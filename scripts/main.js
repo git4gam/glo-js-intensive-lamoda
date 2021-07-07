@@ -2,7 +2,6 @@
 
 let hash = location.hash.substring(1);
 //console.log(hash);
-let goodsTitle = document.querySelector('.goods__title');
 
 const headerCityButton = document.querySelector('.header__city-button');
 headerCityButton.textContent =
@@ -46,6 +45,15 @@ const cartModalClose = () => {
   enableScroll();
 };
 
+// Вывод имени категории
+const goodsTitle = document.querySelector('.goods__title');
+const navigationLinks = document.querySelectorAll('.navigation__link');
+navigationLinks.forEach((link) =>
+  link.addEventListener('click', (e) => {
+    goodsTitle.textContent = e.target.textContent;
+  })
+);
+
 // Запрос базы данных
 const getData = async (source) => {
   const data = await fetch(source);
@@ -55,16 +63,6 @@ const getData = async (source) => {
     throw new Error(
       `Данные не были получены, ошибка ${data.status} ${data.statusText}`
     );
-  }
-};
-
-const getCategoryText = () => {
-  if (hash === 'men') {
-    return 'Мужчинам';
-  } else if (hash === 'women') {
-    return 'Женщинам';
-  } else if (hash === 'kids') {
-    return 'Детям';
   }
 };
 
@@ -164,8 +162,7 @@ try {
       const card = createCard(item);
       goodsList.append(card);
     });
-
-    goodsTitle.textContent = getCategoryText();
+    //goodsTitle.textContent = getCategoryText();
   };
 
   window.addEventListener('hashchange', () => {
