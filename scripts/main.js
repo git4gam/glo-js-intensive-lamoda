@@ -1,5 +1,9 @@
 'use strict';
 
+let hash = location.hash.substring(1);
+//console.log(hash);
+let goodsTitle = document.querySelector('.goods__title');
+
 const headerCityButton = document.querySelector('.header__city-button');
 headerCityButton.textContent =
   localStorage.getItem('lomoda-location') || 'Ваш город?';
@@ -54,10 +58,24 @@ const getData = async (source) => {
   }
 };
 
-const getGoods = (callback) => {
+const getCategoryText = () => {
+  if (hash === 'men') {
+    return 'Мужчинам';
+  } else if (hash === 'women') {
+    return 'Женщинам';
+  } else if (hash === 'kids') {
+    return 'Детям';
+  }
+};
+
+const getGoods = (callback, value) => {
   getData('db.json')
     .then((data) => {
-      callback(data);
+      if (value) {
+        callback(data.filter((item) => item.category === value));
+      } else {
+        callback(data);
+      }
     })
     .catch((err) => {
       console.error(err);
@@ -146,9 +164,16 @@ try {
       const card = createCard(item);
       goodsList.append(card);
     });
+
+    goodsTitle.textContent = getCategoryText();
   };
 
-  getGoods(renderGoodsList);
+  window.addEventListener('hashchange', () => {
+    hash = location.hash.substring(1);
+    getGoods(renderGoodsList, hash);
+  });
+
+  getGoods(renderGoodsList, hash);
 } catch (err) {
   console.log(err);
 }
