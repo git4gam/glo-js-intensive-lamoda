@@ -88,40 +88,42 @@ document.addEventListener('keydown', (event) => {
   }
 });
 
+// Вызовы
+
 //getGoods((data) => {
 //  console.warn(data);
 //});
 
-// Вызовы
 try {
   const goodsList = document.querySelector('.goods__list');
   if (!goodsList) {
     throw 'This is not a goods page!';
   }
 
-  const createCard = (data) => {
+  const createCard = ({ id, preview, name, cost, brand, sizes }) => {
+    //const { id, preview, name, cost, brand, sizes } = data;
+
     const li = document.createElement('li');
     li.classList.add('goods__item');
+
     li.innerHTML = `
             <article class="good">
-                <a class="good__link-img" href="card-good.html#${data.id}">
-                    <img class="good__img" src="goods-image/${
-                      data.preview
-                    }" alt="${data.name}">
+                <a class="good__link-img" href="card-good.html#${id}">
+                    <img class="good__img" src="goods-image/${preview}" alt="${name}">
                  </a>
                  <div class="good__description">
-                    <p class="good__price">${data.cost} &#8381;</p>
-                    <h3 class="good__title">${
-                      data.brand
-                    } <span class="good__title__grey">/ ${
-      data.name
-    } </span></h3>
-                    <p class="good__sizes">Размеры (RUS): <span class="good__sizes-list">${data.sizes.join(
-                      ', '
+                    <p class="good__price">${cost} &#8381;</p>
+                    <h3 class="good__title">${brand} <span class="good__title__grey">/ ${name} </span></h3>
+                    ${
+                      sizes
+                        ? `
+                    <p class="good__sizes">Размеры (RUS): <span class="good__sizes-list">${sizes.join(
+                      ' '
                     )}</span></p>
-                    <a class="good__link" href="card-good.html#${
-                      data.id
-                    }">Подробнее</a>
+                    `
+                        : ''
+                    }
+                    <a class="good__link" href="card-good.html#${id}">Подробнее</a>
                  </div>
             </article>
         `;
@@ -131,8 +133,18 @@ try {
 
   const renderGoodsList = (data) => {
     goodsList.textContent = '';
-    data.map((item) => {
-      goodsList.append(createCard(item));
+    // for (let i = 0; i < data.length; i++) {
+    // const card = createCard(data[i]);
+    // goodsList.append(card);
+    // }
+    // for (const item of data) {
+    // const card = createCard(item);
+    // goodsList.append(card);
+    // }
+    //data.forEach((item, index, arr) => {
+    data.forEach((item) => {
+      const card = createCard(item);
+      goodsList.append(card);
     });
   };
 
