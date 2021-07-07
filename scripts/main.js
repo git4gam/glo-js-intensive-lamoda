@@ -9,7 +9,6 @@ headerCityButton.textContent =
 
 // Блокировка скролла
 const disableScroll = () => {
-  //document.body.style.overflow = 'hidden';
   document.body.dbScrollY = window.scrollY;
   const scrollWidth = window.innerWidth - document.body.offsetWidth;
   document.body.style.cssText = `
@@ -91,8 +90,6 @@ subheaderCart.addEventListener('click', cartModalOpen);
 
 cartOverlay.addEventListener('click', (event) => {
   const target = event.target;
-  //console.dir(target.classList);
-  //if (target.classList.contains('cart__btn-close') || target.classList.contains('cart-overlay')) {
   if (target.matches('.cart__btn-close') || target.matches('.cart-overlay')) {
     cartModalClose();
   }
@@ -105,31 +102,24 @@ document.addEventListener('keydown', (event) => {
 });
 
 // Вызовы
-
-//getGoods((data) => {
-//  console.warn(data);
-//});
-
 try {
   const goodsList = document.querySelector('.goods__list');
   if (!goodsList) {
     throw 'This is not a goods page!';
   }
 
-  const createCard = ({ id, preview, name, cost, brand, sizes }) => {
-    //const { id, preview, name, cost, brand, sizes } = data;
-
+  const createCard = ({ id, preview, name: title, cost, brand, sizes }) => {
     const li = document.createElement('li');
     li.classList.add('goods__item');
 
     li.innerHTML = `
             <article class="good">
                 <a class="good__link-img" href="card-good.html#${id}">
-                    <img class="good__img" src="goods-image/${preview}" alt="${name}">
+                    <img class="good__img" src="goods-image/${preview}" alt="${title}">
                  </a>
                  <div class="good__description">
                     <p class="good__price">${cost} &#8381;</p>
-                    <h3 class="good__title">${brand} <span class="good__title__grey">/ ${name} </span></h3>
+                    <h3 class="good__title">${brand} <span class="good__title__grey">/ ${title} </span></h3>
                     ${
                       sizes
                         ? `
@@ -149,20 +139,10 @@ try {
 
   const renderGoodsList = (data) => {
     goodsList.textContent = '';
-    // for (let i = 0; i < data.length; i++) {
-    // const card = createCard(data[i]);
-    // goodsList.append(card);
-    // }
-    // for (const item of data) {
-    // const card = createCard(item);
-    // goodsList.append(card);
-    // }
-    //data.forEach((item, index, arr) => {
     data.forEach((item) => {
       const card = createCard(item);
       goodsList.append(card);
     });
-    //goodsTitle.textContent = getCategoryText();
   };
 
   window.addEventListener('hashchange', () => {
