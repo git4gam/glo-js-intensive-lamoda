@@ -46,12 +46,17 @@ const cartModalClose = () => {
 
 // Вывод имени категории
 const goodsTitle = document.querySelector('.goods__title');
-const navigationLinks = document.querySelectorAll('.navigation__link');
-navigationLinks.forEach((link) =>
-  link.addEventListener('click', (e) => {
-    goodsTitle.textContent = e.target.textContent;
-  })
-);
+// const navigationLinks = document.querySelectorAll('.navigation__link');
+// navigationLinks.forEach((link) =>
+//   link.addEventListener('click', (e) => {
+//     goodsTitle.textContent = e.target.textContent;
+//   })
+// );
+const changeTitle = () => {
+  goodsTitle.textContent = document.querySelector(
+    `[href*="#${hash}"]`
+  ).textContent;
+};
 
 // Запрос базы данных
 const getData = async (source) => {
@@ -101,7 +106,7 @@ document.addEventListener('keydown', (event) => {
   }
 });
 
-// Вызовы
+// Страница товаров
 try {
   const goodsList = document.querySelector('.goods__list');
   if (!goodsList) {
@@ -150,9 +155,11 @@ try {
   window.addEventListener('hashchange', () => {
     hash = location.hash.substring(1);
     getGoods(renderGoodsList, hash);
+    changeTitle();
   });
 
   getGoods(renderGoodsList, hash);
+  changeTitle();
 } catch (err) {
   console.log(err);
 }
