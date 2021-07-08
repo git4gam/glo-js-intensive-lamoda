@@ -178,17 +178,56 @@ try {
   const cardGoodSizes = document.querySelector('.card-good__sizes');
   const cardGoodSizesList = document.querySelector('.card-good__sizes-list');
   const cardGoodBuy = document.querySelector('.card-good__buy');
+  const cardGoodSelectWrapper = document.querySelectorAll(
+    '.card-good__select__wrapper'
+  );
+
+  const generateList = (data) =>
+    data.reduce(
+      (acc, item, index) =>
+        acc +
+        `<li class="card-good__select-item" data-id="${index}">${item}</li>`,
+      ''
+    );
 
   const renderCardGood = ([
     { photo, name: title, cost, brand, sizes, color },
   ]) => {
-    cardGoodImage.src = 'goods-image/' + photo;
+    cardGoodImage.src = `goods-image/${photo}`;
+    cardGoodImage.alt = `${brand} ${title}`;
     cardGoodBrand.textContent = brand;
     cardGoodTitle.textContent = title;
-    cardGoodPrice.innerHTML = `${cost} &#8381`;
-    //cardGoodSizes.textContent = sizes.join(' ');
-    //cardGoodColor.textContent = color.join(' ');
+    cardGoodPrice.innerHTML = `${cost} ₽`;
+    if (sizes) {
+      cardGoodSizes.textContent = sizes[0];
+      cardGoodSizes.dataset.id = 0;
+      cardGoodSizesList.innerHTML = generateList(sizes);
+    } else {
+      cardGoodSizes.style.display = 'none';
+    }
+    if (color) {
+      cardGoodColor.textContent = color[0];
+      cardGoodColor.dataset.id = 0;
+      cardGoodColorList.innerHTML = generateList(color);
+    } else {
+      cardGoodColor.style.display = 'none';
+    }
   };
+
+  cardGoodSelectWrapper.forEach((item) => {
+    item.addEventListener('click', (event) => {
+      const target = event.target;
+      if (target.closest('.card-good__select')) {
+        target.classList.toggle('card-good__select__open');
+      }
+      if (target.closest('.card-good__select-item')) {
+        const cardGoodSelect = item.querySelector('.card-good__select');
+        cardGoodSelect.classList.remove('card-good__select__open');
+        cardGoodSelect.textContent = target.textContent;
+        cardGoodSelect.dataset.id = target.dataset.id;
+      }
+    });
+  });
 
   getGoods(renderCardGood, 'id', hash);
 } catch (err) {
