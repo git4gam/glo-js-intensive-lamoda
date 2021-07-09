@@ -17,6 +17,30 @@ const setLocalStorage = (value, key = 'cart-lomoda') =>
 // setLocalStorage(test, 'test');
 // console.log(getLocalStorage('test'));
 
+const cartListGoods = document.querySelector('.cart__list-goods');
+
+const renderCart = () => {
+  cartListGoods.textContent = '';
+  let totalPrice = 0;
+  const cartItems = getLocalStorage();
+  cartItems.forEach((item, index) => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>${index + 1}</td>
+      <td>${item.brand} ${item.title}</td>
+      ${item.color ? `<td>${item.color}</td>` : `<td>-</td>`}
+      ${item.size ? `<td>${item.size}</td>` : `<td>-</td>`}
+      <td>${item.cost} &#8381;</td>
+      <td><button class="btn-delete" data-id="${item.id}">&times;</button></td>
+    `;
+    totalPrice += item.cost;
+    cartListGoods.append(tr);
+  });
+  document.querySelector(
+    '.cart__total-cost'
+  ).innerHTML = `${totalPrice} &#8381`;
+};
+
 // Блокировка скролла
 const disableScroll = () => {
   document.body.dbScrollY = window.scrollY;
@@ -47,6 +71,7 @@ const cartOverlay = document.querySelector('.cart-overlay');
 const cartModalOpen = () => {
   cartOverlay.classList.add('cart-overlay-open');
   disableScroll();
+  renderCart();
 };
 
 const cartModalClose = () => {
@@ -204,7 +229,6 @@ try {
     { id, photo, name: title, cost, brand, sizes, color },
   ]) => {
     const data = { brand, title, cost, id };
-    //setLocalStorage(data);
     cardGoodImage.src = `goods-image/${photo}`;
     cardGoodImage.alt = `${brand} ${title}`;
     cardGoodBrand.textContent = brand;
@@ -232,8 +256,7 @@ try {
       if (Array.isArray(cartData)) {
         setLocalStorage([...cartData, data]);
       } else {
-        const cartDataArr = [cartData, data];
-        setLocalStorage(cartDataArr);
+        setLocalStorage([cartData, data]);
       }
     });
   };
