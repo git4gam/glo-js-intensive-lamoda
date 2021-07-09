@@ -7,6 +7,16 @@ const headerCityButton = document.querySelector('.header__city-button');
 headerCityButton.textContent =
   localStorage.getItem('lomoda-location') || 'Ваш город?';
 
+// Работа с корзиной
+const getLocalStorage = (key = 'cart-lomoda') =>
+  JSON?.parse(localStorage.getItem(key)) || [];
+const setLocalStorage = (value, key = 'cart-lomoda') =>
+  localStorage.setItem(key, JSON.stringify(value));
+
+// const test = { a: 1, b: { b1: 1, b2: 2 }, c: 3 };
+// setLocalStorage(test, 'test');
+// console.log(getLocalStorage('test'));
+
 // Блокировка скролла
 const disableScroll = () => {
   document.body.dbScrollY = window.scrollY;
@@ -161,7 +171,7 @@ try {
   getGoods(renderGoodsList, 'category', hash);
   changeTitle();
 } catch (err) {
-  console.log(err);
+  console.warn(err);
 }
 
 // Страница товара
@@ -191,8 +201,10 @@ try {
     );
 
   const renderCardGood = ([
-    { photo, name: title, cost, brand, sizes, color },
+    { id, photo, name: title, cost, brand, sizes, color },
   ]) => {
+    const data = { brand, title, cost, id };
+    //setLocalStorage(data);
     cardGoodImage.src = `goods-image/${photo}`;
     cardGoodImage.alt = `${brand} ${title}`;
     cardGoodBrand.textContent = brand;
@@ -212,6 +224,18 @@ try {
     } else {
       cardGoodColor.style.display = 'none';
     }
+
+    cardGoodBuy.addEventListener('click', () => {
+      if (color) data.color = cardGoodColor.textContent;
+      if (sizes) data.size = cardGoodSizes.textContent;
+      const cartData = getLocalStorage();
+      if (Array.isArray(cartData)) {
+        setLocalStorage([...cartData, data]);
+      } else {
+        const cartDataArr = [cartData, data];
+        setLocalStorage(cartDataArr);
+      }
+    });
   };
 
   cardGoodSelectWrapper.forEach((item) => {
