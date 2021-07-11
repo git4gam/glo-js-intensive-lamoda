@@ -9,14 +9,40 @@ const cartOverlay = document.querySelector('.cart-overlay');
 
 const goodsTitle = document.querySelector('.goods__title');
 
-// Работа с корзиной
-const getLocalStorage = (key = 'cart-lomoda') =>
-  JSON?.parse(localStorage.getItem(key)) || [];
-const setLocalStorage = (value, key = 'cart-lomoda') =>
-  localStorage.setItem(key, JSON.stringify(value));
-
 const cartListGoods = document.querySelector('.cart__list-goods');
 const cartTotalCost = document.querySelector('.cart__total-cost');
+
+// Работа с корзиной
+const declOfNum = (n, titles) => {
+  return titles[
+    n % 10 === 1 && n % 100 !== 11
+      ? 0
+      : n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 10 || n % 100 >= 20)
+      ? 1
+      : 2
+  ];
+};
+
+const updateCartCount = () => {
+  const cartItemsCount = getLocalStorage().length;
+  if (cartItemsCount > 0) {
+    const cartItemsTitle = declOfNum(cartItemsCount, [
+      'товар',
+      'товара',
+      'товаров',
+    ]);
+    subheaderCart.textContent = `${cartItemsCount} ${cartItemsTitle}`;
+  } else {
+    subheaderCart.textContent = 'Корзина';
+  }
+};
+
+const getLocalStorage = (key = 'cart-lomoda') =>
+  JSON?.parse(localStorage.getItem(key)) || [];
+const setLocalStorage = (value, key = 'cart-lomoda') => {
+  localStorage.setItem(key, JSON.stringify(value));
+  updateCartCount();
+};
 
 const renderCart = () => {
   cartListGoods.textContent = '';
@@ -145,6 +171,8 @@ cartListGoods.addEventListener('click', (event) => {
 
 headerCityButton.textContent =
   localStorage.getItem('lomoda-location') || 'Ваш город?';
+
+updateCartCount();
 
 // Страница категорий товаров
 try {
