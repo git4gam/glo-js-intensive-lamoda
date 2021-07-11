@@ -18,6 +18,7 @@ const setLocalStorage = (value, key = 'cart-lomoda') =>
 // console.log(getLocalStorage('test'));
 
 const cartListGoods = document.querySelector('.cart__list-goods');
+const cartTotalCost = document.querySelector('.cart__total-cost');
 
 const renderCart = () => {
   cartListGoods.textContent = '';
@@ -36,9 +37,7 @@ const renderCart = () => {
     totalPrice += item.cost;
     cartListGoods.append(tr);
   });
-  document.querySelector(
-    '.cart__total-cost'
-  ).innerHTML = `${totalPrice} &#8381`;
+  cartTotalCost.textContent = totalPrice + '  ₽';
 };
 
 // Блокировка скролла
@@ -252,12 +251,15 @@ try {
     cardGoodBuy.addEventListener('click', () => {
       if (color) data.color = cardGoodColor.textContent;
       if (sizes) data.size = cardGoodSizes.textContent;
-      const cartData = getLocalStorage();
-      if (Array.isArray(cartData)) {
-        setLocalStorage([...cartData, data]);
-      } else {
-        setLocalStorage([cartData, data]);
-      }
+      // const cartData = getLocalStorage();
+      // if (Array.isArray(cartData)) {
+      //   setLocalStorage([...cartData, data]);
+      // } else {
+      //   setLocalStorage([cartData, data]);
+      // }
+      const cardData = getLocalStorage();
+      cardData.push(data);
+      setLocalStorage(cardData);
     });
   };
 
