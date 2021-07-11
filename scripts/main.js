@@ -3,8 +3,11 @@
 let hash = location.hash.substring(1);
 
 const headerCityButton = document.querySelector('.header__city-button');
-headerCityButton.textContent =
-  localStorage.getItem('lomoda-location') || 'Ваш город?';
+
+const subheaderCart = document.querySelector('.subheader__cart');
+const cartOverlay = document.querySelector('.cart-overlay');
+
+const goodsTitle = document.querySelector('.goods__title');
 
 // Работа с корзиной
 const getLocalStorage = (key = 'cart-lomoda') =>
@@ -41,13 +44,6 @@ const deleteItemCart = (id) => {
   setLocalStorage(newCartItems);
 };
 
-cartListGoods.addEventListener('click', (event) => {
-  if (event.target.matches('.btn-delete')) {
-    deleteItemCart(event.target.dataset.id);
-    renderCart();
-  }
-});
-
 // Блокировка скролла
 const disableScroll = () => {
   document.body.dbScrollY = window.scrollY;
@@ -72,9 +68,6 @@ const enableScroll = () => {
 };
 
 // Модальное окно
-const subheaderCart = document.querySelector('.subheader__cart');
-const cartOverlay = document.querySelector('.cart-overlay');
-
 const cartModalOpen = () => {
   cartOverlay.classList.add('cart-overlay-open');
   disableScroll();
@@ -87,7 +80,6 @@ const cartModalClose = () => {
 };
 
 // Вывод имени категории
-const goodsTitle = document.querySelector('.goods__title');
 const changeTitle = () => {
   goodsTitle.textContent = document.querySelector(
     `[href*="#${hash}"]`
@@ -141,6 +133,18 @@ document.addEventListener('keydown', (event) => {
     cartModalClose();
   }
 });
+
+cartListGoods.addEventListener('click', (event) => {
+  if (event.target.matches('.btn-delete')) {
+    deleteItemCart(event.target.dataset.id);
+    renderCart();
+  }
+});
+
+// Вызовы функций
+
+headerCityButton.textContent =
+  localStorage.getItem('lomoda-location') || 'Ваш город?';
 
 // Страница категорий товаров
 try {
