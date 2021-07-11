@@ -13,6 +13,14 @@ const cartListGoods = document.querySelector('.cart__list-goods');
 const cartTotalCost = document.querySelector('.cart__total-cost');
 
 // Работа с корзиной
+const getLocalStorage = (key = 'cart-lomoda') => {
+  JSON?.parse(localStorage.getItem(key)) || [];
+};
+
+const setLocalStorage = (value, key = 'cart-lomoda') => {
+  localStorage.setItem(key, JSON.stringify(value));
+};
+
 const declOfNum = (n, titles) => {
   return titles[
     n % 10 === 1 && n % 100 !== 11
@@ -35,13 +43,6 @@ const updateCartCount = () => {
   } else {
     subheaderCart.textContent = 'Корзина';
   }
-};
-
-const getLocalStorage = (key = 'cart-lomoda') =>
-  JSON?.parse(localStorage.getItem(key)) || [];
-const setLocalStorage = (value, key = 'cart-lomoda') => {
-  localStorage.setItem(key, JSON.stringify(value));
-  updateCartCount();
 };
 
 const renderCart = () => {
@@ -68,6 +69,7 @@ const deleteItemCart = (id) => {
   const cartItems = getLocalStorage();
   const newCartItems = cartItems.filter((item) => item.id !== id);
   setLocalStorage(newCartItems);
+  updateCartCount();
 };
 
 // Блокировка скролла
@@ -301,6 +303,7 @@ try {
       const cardData = getLocalStorage();
       cardData.push(data);
       setLocalStorage(cardData);
+      updateCartCount();
     });
   };
 
