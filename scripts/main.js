@@ -1,7 +1,6 @@
 'use strict';
 
 let hash = location.hash.substring(1);
-//console.log(hash);
 
 const headerCityButton = document.querySelector('.header__city-button');
 headerCityButton.textContent =
@@ -12,10 +11,6 @@ const getLocalStorage = (key = 'cart-lomoda') =>
   JSON?.parse(localStorage.getItem(key)) || [];
 const setLocalStorage = (value, key = 'cart-lomoda') =>
   localStorage.setItem(key, JSON.stringify(value));
-
-// const test = { a: 1, b: { b1: 1, b2: 2 }, c: 3 };
-// setLocalStorage(test, 'test');
-// console.log(getLocalStorage('test'));
 
 const cartListGoods = document.querySelector('.cart__list-goods');
 const cartTotalCost = document.querySelector('.cart__total-cost');
@@ -39,6 +34,19 @@ const renderCart = () => {
   });
   cartTotalCost.textContent = totalPrice + '  ₽';
 };
+
+const deleteItemCart = (id) => {
+  const cartItems = getLocalStorage();
+  const newCartItems = cartItems.filter((item) => item.id !== id);
+  setLocalStorage(newCartItems);
+};
+
+cartListGoods.addEventListener('click', (event) => {
+  if (event.target.matches('.btn-delete')) {
+    deleteItemCart(event.target.dataset.id);
+    renderCart();
+  }
+});
 
 // Блокировка скролла
 const disableScroll = () => {
@@ -80,12 +88,6 @@ const cartModalClose = () => {
 
 // Вывод имени категории
 const goodsTitle = document.querySelector('.goods__title');
-// const navigationLinks = document.querySelectorAll('.navigation__link');
-// navigationLinks.forEach((link) =>
-//   link.addEventListener('click', (e) => {
-//     goodsTitle.textContent = e.target.textContent;
-//   })
-// );
 const changeTitle = () => {
   goodsTitle.textContent = document.querySelector(
     `[href*="#${hash}"]`
@@ -178,8 +180,6 @@ try {
 
   const renderGoodsList = (data) => {
     goodsList.textContent = '';
-    //const arr = data.map(createCard);
-    //goodsList.append(...arr);
     data.forEach((item) => {
       const card = createCard(item);
       goodsList.append(card);
@@ -251,12 +251,6 @@ try {
     cardGoodBuy.addEventListener('click', () => {
       if (color) data.color = cardGoodColor.textContent;
       if (sizes) data.size = cardGoodSizes.textContent;
-      // const cartData = getLocalStorage();
-      // if (Array.isArray(cartData)) {
-      //   setLocalStorage([...cartData, data]);
-      // } else {
-      //   setLocalStorage([cartData, data]);
-      // }
       const cardData = getLocalStorage();
       cardData.push(data);
       setLocalStorage(cardData);
