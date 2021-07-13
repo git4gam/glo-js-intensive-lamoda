@@ -1,38 +1,60 @@
 'use strict';
 //https://youtu.be/NF6DV-S9DEE
+const ver = window.navigator.appVersion.match(/.*Chrome\/([0-9\.]+)/);
+console.log(ver);
 
 // proccess data
 const practice = (data) => {
   //console.log(data);
-  const allNames = [];
-  data.forEach((item) => allNames.push(item.name));
-  console.log('allNames: ', allNames);
+  const forEachItemsProp = [];
+  data.forEach((item) => forEachItemsProp.push(item.name));
+  console.log('forEachItemsProp: ', forEachItemsProp);
 
-  const allNames2 = data.map((item) => item.name);
-  console.log('allNames2: ', allNames2);
+  const mapItemsProp = data.map((item) => item.name);
+  console.log('mapItemsProp: ', mapItemsProp);
 
-  const allSelectedProps = data.map((item) => ({
+  const mapItemsProps = data.map((item) => ({
     name: item.name,
     brand: item.brand,
     cost: item.cost,
   }));
-  console.log('allSelectedProps: ', allSelectedProps);
+  console.log('mapItemsProps: ', mapItemsProps);
 
-  const allSelectedProps2 = data.map(({ name, brand, cost }) => ({
+  const mapItemsProps2 = data.map(({ name, brand, cost }) => ({
     name,
     brand,
     cost,
   }));
-  console.log('allSelectedProps2: ', allSelectedProps2);
+  console.log('mapItemsProps2: ', mapItemsProps2);
 
-  const filteredGoods = data.filter((item) => item.brand === 'Dali');
-  console.log('filteredGoods: ', filteredGoods);
+  const filterItemsByBrand = data.filter((item) => item.brand === 'Dali');
+  console.log('filterItemsByBrand: ', filterItemsByBrand);
 
   const someItemByBrand = data.some((item) => item.brand === 'Dali');
   console.log('someItemByBrand: ', someItemByBrand);
 
   const findItemByBrand = data.find((item) => item.brand === 'Dali');
   console.log('findItemByBrand: ', findItemByBrand);
+
+  const everyItemHasProp = data.every((item) => item.sizes);
+  console.log('everyItemHasProp: ', everyItemHasProp);
+
+  const filterItemWithoutProp = data.filter((item) => !item.sizes);
+  console.log('filterItemWithNoProp: ', filterItemWithoutProp);
+
+  const reduceItemsProps = data.reduce(
+    (accum, item) => accum.concat(item.name),
+    []
+  );
+  console.log('reduceItemsProps: ', reduceItemsProps);
+
+  const uniqueReduceItemsProps = reduceItemsProps.filter(
+    (item, index) => reduceItemsProps.indexOf(item) === index && item
+  );
+  console.log('uniqueReduceItemsProps: ', uniqueReduceItemsProps);
+
+  const sortUniqueReduceItemsProps = uniqueReduceItemsProps.sort();
+  console.log('sortUniqueReduceItemsProps: ', sortUniqueReduceItemsProps);
 };
 
 // get data

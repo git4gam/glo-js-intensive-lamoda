@@ -32,8 +32,8 @@ const declOfNum = (n, titles) => {
 };
 
 const updateCartCount = () => {
-  const cartItemsCount = getLocalStorage().length;
-  if (cartItemsCount > 0) {
+  if (getLocalStorage().length) {
+    const cartItemsCount = getLocalStorage().length;
     const cartItemsTitle = declOfNum(cartItemsCount, [
       'товар',
       'товара',
